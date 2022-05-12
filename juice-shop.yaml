@@ -1,0 +1,51 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: juice-shop-vs
+spec:
+  host: owasp-juiceshop.example.com
+  tls:
+    secret: bookinfo-secret
+  upstreams:
+  - name: owasp-juice-shop
+    service: juice-shop
+    port: 8000
+  routes:
+  - path: /
+    action:
+      pass: owasp-juice-shop
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: juice-shop
+spec:
+  template:
+    metadata:
+      labels:
+        app: juice-shop
+      annotations:
+        #injector.nsm.nginx.com/auto-inject: "false"
+    spec:
+      containers:
+      - name: juice-shop
+        image: bkimminich/juice-shop
+        ports: 
+        - containerPort: 3000
+          protocol: TCP
+  selector:
+    matchLabels:
+      app: juice-shop
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: juice-shop
+spec:
+  type: ClusterIP
+  selector:
+    app: juice-shop
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 3000
