@@ -116,8 +116,8 @@ Expected response:
 You can view the logs of rejected requests from the syslog deployment
 
 ```
-$ kubectl exec -it _<name-of-syslog-pod>_ -- cat /var/log/messages
-
+$ kubectl exec -it <name-of-syslog-pod> -- cat /var/log/messages
+```
 
 For a full walk through of the demo please see the [webinar](https://www.nginx.com/resources/webinars/secure-your-kubernetes-apps-from-attacks-with-nginx/)
 
