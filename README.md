@@ -1,4 +1,4 @@
-# App Protect Policy Configuration by SNI routing
+# App Protect Policy Configuration by SNI Routing
 
 ## Overview
 
@@ -64,11 +64,12 @@ Expected reponse:
 2. Now apply web app protection for the juice-shop deployment. 
 
 ```
-$ kubectl apply -f app-protect/ap-banana-uds.yaml
-$ kubectl apply -f app-protect/ap-dataguard-alarm-policy.yaml
-$ kubectl apply -f app-protect/ap-logconf.yaml
-$ kubectl apply -f app-protect/waf.yaml
-$ kubectl apply -f app-protect/juice-shop-vs.yaml
+$ kubectl apply -f app-protect/juice-shop/ap-banana-uds.yaml
+$ kubectl apply -f app-protect/juice-shop/ap-dataguard-alarm-policy.yaml
+$ kubectl apply -f app-protect/juice-shop/ap-logconf.yaml
+$ kubectl apply -f app-protect/juice-shop/waf.yaml
+$ kubectl apply -f app-protect/juice-shop/juice-shop-vs.yaml
+$ kubectl apply -f app-protect/juice-shop/syslog.pod
 ```
 
 to test, let's run the same SQL injection command again
@@ -112,7 +113,13 @@ Expected response:
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 3480987504780423607<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
 ``` 
 
-For a full walk through of the demo please see the [webinar](https://www.nginx.com/resources/webinars/secure-your-kubernetes-apps-from-attacks-with-nginx/)
+You can view the logs of rejected requests from the syslog deployment
+
+```
+$ kubectl exec -it <_name-of-syslog-pod_> -- cat /var/log/messages
+
+
+For a full walk through of the demo please see the [**webinar**](https://www.nginx.com/resources/webinars/secure-your-kubernetes-apps-from-attacks-with-nginx/)
 
 
 ## Author information
