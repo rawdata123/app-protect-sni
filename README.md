@@ -10,7 +10,7 @@ In this repository, we will set two different WAF signatures to two applications
 
 NGINX App Protect WAF is only available with NGINX Plus. Before moving forward, make sure you have the NGINX Plus Ingress Controller with App Protect already installed and running in your Kubernetes cluster. You can get started with a [30 day free trial](https://www.nginx.com/free-trial-request-nginx-ingress-controller/) and following the [documentation](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-manifests/) for installation steps.
 
-## Deploymemnt 
+## Deployment 
 
 1. Deploy a secret and juice-shop application
 
