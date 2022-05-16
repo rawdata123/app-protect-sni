@@ -14,8 +14,9 @@ NGINX App Protect WAF is only available with NGINX Plus. Before moving forward, 
 
 1. Deploy a secret and juice-shop application
 
-``` $ kubectl apply -f secret.yaml
-    $ kubectl apply -f juice-shop.yaml
+``` 
+$ kubectl apply -f secret.yaml
+$ kubectl apply -f juice-shop.yaml
 ```
 
 to test, this SQL injection commmand will extract the data from the juice-shop database:
