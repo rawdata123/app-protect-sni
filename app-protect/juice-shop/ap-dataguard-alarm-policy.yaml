@@ -5,13 +5,13 @@ metadata:
 spec:
   policy:
     signature-requirements:
-    - tag: Fruits
+    - tag: Fruits-prime
     signature-sets:
     - name: banana_sigs
       block: true
       signatureSet:
         filter:
-          tagValue: Fruits
+          tagValue: Fruits-prime
           tagFilter: eq
     applicationLanguage: utf-8
     blocking-settings:

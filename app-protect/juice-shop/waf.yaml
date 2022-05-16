@@ -8,5 +8,5 @@ spec:
     apPolicy: "default/dataguard-alarm-prime"
     securityLog:
       enable: true
-      apLogConf: "default/logconf"
+      apLogConf: "default/logconf-prime"
       logDest: "syslog:server=syslog-svc.default:514"

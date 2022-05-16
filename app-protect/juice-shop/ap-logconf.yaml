@@ -1,7 +1,7 @@
 apiVersion: appprotect.f5.com/v1beta1
 kind: APLogConf
 metadata:
-  name: logconf
+  name: logconf-prime
 spec:
   content:
     format: default

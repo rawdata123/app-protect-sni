@@ -15,4 +15,4 @@ spec:
     systems:
     - name: Microsoft Windows
     - name: Unix/Linux
-  tag: Fruits
+  tag: Fruits-prime
