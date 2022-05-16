@@ -8,7 +8,7 @@ In this repository, we will set two different WAF signatures to two applications
 
 ## Requirements
 
-NGINX App Protect WAF is only available with NGINX Plus. Before moving forward, make sure you have the NGINX Plus Ingress Controller with App Protect already installed and running in your Kubernetes cluster. You can get started with a [30 day free trial] (#https://www.nginx.com/free-trial-request-nginx-ingress-controller/)
+NGINX App Protect WAF is only available with NGINX Plus. Before moving forward, make sure you have the NGINX Plus Ingress Controller with App Protect already installed and running in your Kubernetes cluster. You can get started with a [30 day free trial](https://www.nginx.com/free-trial-request-nginx-ingress-controller/)
 
 ## Deploymemnt 
 
@@ -81,6 +81,40 @@ Expected response:
 <html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 17209185635870199087<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
 ```
 
+You can also test that the bespoke signature (ap-banana) for juice-shop is in effect.
 
-For a full walk through of the demo please see the [webinar] (#https://www.nginx.com/resources/webinars/secure-your-kubernetes-apps-from-attacks-with-nginx/)
+```curl -iX POST --insecure -d 'banana' https://owasp-juiceshop.example.com```
 
+Expected response:
+
+```html
+<html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 3480987504780435337<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
+```
+
+3. Now deploy the bookinfo application and add web app protection.
+
+```
+$ kubectl apply -f bookinfo.yaml
+$ kubectl apply -f app-protect/bookinfo/ap-apple-uds.yaml
+$ kubectl apply -f app-protect/bookinfo/ap-dataguard-alarm-policy.yaml
+$ kubectl apply -f app-protect/bookinfo/ap-logconf.yaml
+$ kubectl apply -f app-protect/bookinfo/waf.yaml
+$ kubectl apply -f app-protect/bookinfo/bookinfo-vs.yaml
+```
+
+To test we can post data with content 'apple', and the App Protect signature should reject it.
+
+```curl -iX POST --insecure -d 'apple' https://bookinfo.example.com```
+
+Expected response: 
+
+```html
+<html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 3480987504780423607<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
+``` 
+
+For a full walk through of the demo please see the [webinar](https://www.nginx.com/resources/webinars/secure-your-kubernetes-apps-from-attacks-with-nginx/)
+
+
+## Author information
+
+[Amir Rawdat](https://github.com/rawdata123)
