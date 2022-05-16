@@ -69,6 +69,18 @@ $ kubectl apply -f app-protect/ap-dataguard-alarm-policy.yaml
 $ kubectl apply -f app-protect/ap-logconf.yaml
 $ kubectl apply -f app-protect/waf.yaml
 $ kubectl apply -f app-protect/juice-shop-vs.yaml
+```
+
+to test, let's run the same SQL injection command again
+
+```curl -s --insecure "https://owasp-juiceshop.example.com/rest/products/search?q=qwert%27))%20UNION%20SELECT%20sql,%20%272%27,%20%273%27,%20%274%27,%20%275%27,%20%276%27,%20%277%27,%20%278%27,%20%279%27%20FROM%20sqlite_master--"```
+
+Expected response:
+
+```html
+<html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 17209185635870199087<br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
+```
+
 
 For a full walk through of the demo please see the [webinar] (#https://www.nginx.com/resources/webinars/secure-your-kubernetes-apps-from-attacks-with-nginx/)
 
